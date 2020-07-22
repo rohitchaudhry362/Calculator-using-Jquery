@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>calculator</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+		<script>
+			var current='0';
+			var operations=[];
+			var number1=[];
+			var number2=[];
+			var first_operand="0";
+			var second_operand="0";
+			var count=1;
+			var parent="0";
+			var temp1=0;
+			var temp2=0;
+			var temp3=0;
+			$(document).ready(function(){
+			$(".number").click(function(){
+				$(this).css("color", "red").slideUp(300).slideDown(300);
+				var number_id=$(this).attr("id");
+				var str_number_id=number_id.toString();
+				current=current+str_number_id;
+				var current1 = current.substring(1);
+				document.getElementById("screen").innerHTML = current1;
+				
+  				if(operations.length==0)
+  				{	
+  					number1.push(current1);
+  				}
+  				else
+  				{
+  					number2.push(current1);
+  				}
+				console.log(current);
+				console.log(number1);
+				console.log(number2);
+			});
+			$("#CLR").click(function(){
+				$(this).css("color", "red").slideUp(300).slideDown(300);
+				current="0";
+				document.getElementById("screen").innerHTML = current;	
+			});
+			$(".operator").click(function(){
+				$(this).css("color", "red").slideUp(300).slideDown(300);
+				first_operand=current;
+				current="0";
+				document.getElementById("screen").innerHTML = current;
+				var my_operator=$(this).attr("id");
+				operations.push(my_operator);
+				console.log(operations[operations.length-1]);
+				console.log(first_operand);
+			});
+			$(".answer").click(function(){
+				$(this).css("color", "red").slideUp(300).slideDown(300);
+				second_operand=current;
+				last=operations.length-1;
+				var my_answer=0
+				if (operations[last]=="+") {
+					my_answer=
+					parseInt(first_operand,10)+parseInt(second_operand,10);
+				}
+				else if (operations[last]=="-") {
+					my_answer=
+					parseInt(first_operand,10)-parseInt(second_operand,10);
+				}
+				else if (operations[last]=="*") {
+					my_answer=
+					parseInt(first_operand,10)*parseInt(second_operand,10);
+				}
+				else{
+					my_answer=
+					parseInt(first_operand,10)/parseInt(second_operand,10);
+				}
+				document.getElementById("screen").innerHTML=my_answer;
+
+				$("#mytable").append("<tr><td>"+number1[number1.length-1]+"</td><td>"+operations[0]+"</td><td>"+number2[number2.length-1]+"</td><td>=</td><td>"+my_answer+"</td><td><input type='submit' value='edit' class='my_btn' onclick='show_alert(this);''></td></tr>");
+				var row_id="row";
+				var table_row_id=row_id+count.toString();
+				count=count+1;
+				$("tr:last").attr("id",table_row_id);
+				temp1=first_operand;
+				console.log(temp1);
+				temp2=second_operand;
+				console.log(temp2);
+				temp3=operations[operations.length-1];
+				console.log(temp3);
+ 				operations=[];
+				number1=[];
+				number2=[];
+				first_operand="0";
+				second_operand="0";
+			});
+			});
+
+			function show_alert(x){
+				var y=x.parentNode;
+				var z=y.parentNode.id;
+				console.log(document.getElementById(z));
+				document.getElementById(z).cells[0].innerHTML='<input type="text" id="btn1" size="5" onkeypress="txtbox(event)">';
+				document.getElementById(z).cells[1].innerHTML=temp3;
+				document.getElementById(z).cells[2].innerHTML='<input type="text" id="btn3" size="5">';
+				document.getElementById(z).cells[4].innerHTML='<button id="answer_btn" onclick="answer_fun(this)">OK</button>';
+				document.getElementById("btn1").value=temp1;
+				document.getElementById("btn3").value=temp2;
+			}
+			function answer_fun(x) {
+				var y=x.parentNode;
+				var z=y.parentNode.id;
+				var opd1=document.getElementById("btn1").value;
+				var opd2=document.getElementById("btn3").value;
+				document.getElementById(z).cells[0].innerHTML=opd1;
+				document.getElementById(z).cells[2].innerHTML=opd2;
+				var new_operator=document.getElementById(z).cells[1].innerHTML;
+				if(new_operator=='+'){
+					ans=parseInt(opd1,10)+parseInt(opd2,10);
+				}
+				else if(new_operator=='-'){
+					ans=parseInt(opd1,10)-parseInt(opd2,10)
+				}
+				else if(new_operator=="*"){
+					ans=parseInt(opd1,10)*parseInt(opd2,10)
+				}
+				else{
+					ans=parseInt(opd1,10)/parseInt(opd2,10)
+				}
+				document.getElementById(z).cells[4].innerHTML=ans;
+			}
+		</script>
+		<style>
+			div.heading{
+				height:50px;
+				width:500px;
+				border:0px solid black;
+				position:relative;
+				left:50px;
+			}
+			div.outbox{
+				height: 450px;
+				width: 1200px;
+				border:1px solid black;
+
+			}
+			div.calculator{
+				height:400px;
+				width:500px;
+				border:1px solid black;
+				float:left;
+				position:relative;
+				left:50px;
+			}
+			div.history{
+				height: 400px;
+				width: 595px;
+				border:1px solid black;
+				position: relative;
+				left:100px;
+				float: left;
+			}
+			div.screen{
+				height:60px;
+				width:460px;
+				border:1px solid black;
+				position:relative;
+				left:20px;
+				top:10px;
+				font-size: 30px;
+				padding-top: 5px;	
+				text-align: right;
+			}
+			div.row{
+				height:60px;
+				width:460px;
+				border:0px solid black;
+				position:relative;
+				left:20px;
+				top:20px;		
+			}
+			div.number{
+				height:50px;
+				width:100px;
+				float:left;
+				margin-left:9px;
+				border:1px solid black;
+				position:relative;
+				left:5px;
+				top:5px;
+				}
+			div.operator{
+				height:50px;
+				width:100px;
+				float:left;
+				margin-left:9px;
+				border:1px solid black;
+				position:relative;
+				left:5px;
+				top:5px;
+
+			}
+			div.answer{
+				height:50px;
+				width:100px;
+				float:left;
+				margin-left:9px;
+				border:1px solid black;
+				position:relative;
+				left:5px;
+				top:5px;
+
+			}
+			button{
+				height:50px;
+				width:100px;
+				float:left;
+				position:relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="heading">
+			<h1><center>calculator</center></h1>
+		</div>
+		<div class="outbox">
+		<div class="calculator">
+			<div class="screen" id="screen"><br>
+			</div>
+			<div class="row">
+				<div class="number" id="9">
+					<center><button class="number1">9</button></center>
+				</div>
+				<div class="number" id="8">
+					<center><button class="number1">8</button></center>
+				</div>
+				<div class="number" id="7">
+					<center><button class="number1">7</button></center>
+				</div>
+				<div class="operator" id="+">
+					<center><button>+</button></center>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="number" id="6">
+					<center><button class="number1">6</button></center>
+				</div>
+				<div class="number" id="5">
+					<center><button class="number1">5</button></center>
+				</div>
+				<div class="number" id="4">
+					<center><button class="number1">4</button></center>
+				</div>
+				<div class="operator" id="-">
+					<center><button>-</button></center>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="number" id="3">
+					<center><button class="number1">3</button></center>
+				</div>
+				<div class="number" id="2">
+					<center><button class="number1">2</button></center>
+				</div>
+				<div class="number" id="1">
+					<center><button class="number1">1</button></center>
+				</div>
+				<div class="operator" id="*">
+					<center><button>*</button></center>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="number" id="CLR">
+					<center><button>CLR</button></center>
+				</div>
+				<div class="number" id="0">
+					<center><button class="number1">0</button></center>
+				</div>
+				<div class="answer" id="=">
+					<center><button>=</button></center>
+				</div>
+				<div class="operator" id="/">
+					<center><button>/</button></center>
+				</div>
+			</div><!-- div row closed -->
+			
+		</div><!-- div calculator closed -->
+		 <div class="history">
+			<table id="mytable" border=1 style="width:500px;">
+				<tr>
+					<th>operand</th>
+					<th>operator</th>
+					<th>operand</th>
+					<th>=</th>
+					<th>answer</th>
+					<th>edit</th>
+
+				</tr>
+			</table>
+		</div> <!-- div history closed -->
+	</div>	<!-- div outbox closed -->
+</body>
+</html>
